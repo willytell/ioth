@@ -2,6 +2,13 @@ import numpy as np
 import os
 import pydicom
 
+""" Basic functions to load a set of DCMs into a Numpy array and to get metadata stored in a DCM file.
+
+author: Guillermo Torres
+email:  gtorres@cvc.uab.es
+
+"""
+
 
 def readMetadataFromDicom(filename):
     """Read and print the metadata contained in a DCM image file.
@@ -47,9 +54,12 @@ def lookForMetadataElements(fileDataset, pattern):
     return fileDataset.dir(pattern)
 
 
-
+####################################################################
+# Author: Adamos Kyriakou
+# Repository: https://gist.github.com/somada141/8dd67a02e330a657cf9e
+# Related article: https://pyscience.wordpress.com/2014/09/08/dicom-in-python-importing-medical-image-data-into-numpy-with-pydicom-and-vtk/
 def readDicom (dicomPath):
-    """Read a set of DICOM files (inside a directory) to conform a 3D volume.
+    """Load DICOM data into a NumPy array.
 
     Parameter
     ---------
@@ -75,11 +85,7 @@ def readDicom (dicomPath):
     ConstPixelDims = (int(ds.Rows), int(ds.Columns), len(lstFilesDCM))
 
     # Load spacing values (in mm)
-    #ConstPixelSpacing = (float(ds.PixelSpacing[0]), float(ds.PixelSpacing[1]), float(ds.SliceThickness))
-
-    # x = np.arange(0.0, (ConstPixelDims[0]+1)*ConstPixelSpacing[0], ConstPixelSpacing[0])
-    # y = np.arange(0.0, (ConstPixelDims[1]+1)*ConstPixelSpacing[1], ConstPixelSpacing[1])
-    # z = np.arange(0.0, (ConstPixelDims[2]+1)*ConstPixelSpacing[2], ConstPixelSpacing[2])
+    # ConstPixelSpacing = (float(ds.PixelSpacing[0]), float(ds.PixelSpacing[1]), float(ds.SliceThickness))
 
     # The array is sized based on 'ConstPixelDims'
     dicomArray = np.zeros(ConstPixelDims, dtype=ds.pixel_array.dtype)
@@ -93,6 +99,7 @@ def readDicom (dicomPath):
 
     return dicomArray
 
+####################################################################
 
 
 def debug():
@@ -117,7 +124,7 @@ def debug():
 
     print("----------------")
 
-    # reading all the .dcm files in a directory -> 3D volume
+    # loading all the .dcm files into a NumPy array
     volume = readDicom('/home/willytell/Escritorio/LungCTDataBase/LIDC-IDRI/LIDC-IDRI-0002/01-01-2000-98329/3000522-04919/')
     print("Volume shape: {}".format(volume.shape))
 
