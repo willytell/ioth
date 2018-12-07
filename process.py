@@ -1,4 +1,5 @@
 import numpy as np
+from BasicIO.niftyio import readNifty
 from scipy.ndimage.filters import gaussian_filter
 from skimage.filters import threshold_otsu
 from scipy.ndimage.morphology import binary_opening, binary_closing, binary_dilation, binary_erosion, generate_binary_structure
@@ -87,11 +88,9 @@ def basicProcessing(volume, sigma, order, output, mode, truncate):
 
 
 def debug():
+    vol, metadata = readNifty('/home/willytell/Escritorio/LungCTDataBase/ioth/Nii_Vol/CTRoi_nii/LIDC-IDRI-0005_GT1_1.nii.gz')
 
-    vol = np.random.randint(256, size=(10,10,10))   # create a volume of 10x10x10 with elements between 0-255
-
-
-    sigma = [2, 2, 2]
+    sigma = 1  #[2, 2, 2]
     order= 0
     mode = 'reflect'
     truncate = 4.0
