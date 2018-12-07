@@ -1,5 +1,5 @@
 import numpy as np
-from BasicIO.niftyio import readNifty
+from BasicIO.niftyio import readNifty, saveNifty
 from scipy.ndimage.filters import gaussian_filter
 from skimage.filters import threshold_otsu
 from scipy.ndimage.morphology import binary_opening, binary_closing, binary_dilation, binary_erosion, generate_binary_structure
@@ -58,10 +58,11 @@ def basicProcessing(volume, sigma, order, output, mode, truncate):
     #### Morphological Operation ###
 
     # Opening removes small objects
-    r1 = binary_opening(mask, structure=np.ones((3, 3, 3))).astype(int)
+    r1 = binary_opening(mask, structure=np.ones((3, 3, 3))).astype(np.int8)
 
     # Closing removes small holes
-    r2 = binary_closing(r1, structure=np.ones((3, 3, 3))).astype(np.int)
+    r2 = binary_closing(r1, structure=np.ones((3, 3, 3))).astype(np.int8)
+
 
     # 3x3x3 structuring element with connectivity 4 or 8
     struct1 = generate_binary_structure(3, 1)   # no diagonal elements
@@ -70,25 +71,26 @@ def basicProcessing(volume, sigma, order, output, mode, truncate):
     print (struct1)
 
 
-
     #r3 = binary_dilation(r2).astype(int)
     r3 = binary_dilation(r2, structure=struct1).astype(int)    # using a structure element
 
     # Erosion removes objects smaller than the structure
-    r4 = binary_erosion(r3, structure=np.ones((3, 3, 3))).astype(int)
+    r4 = binary_erosion(r3, structure=np.ones((3, 3, 3))).astype(np.int8)
 
 
     #### Measurements ###
 
-    struct2 = np.ones((3, 3, 3), dtype=np.int)
+    struct2 = np.ones((3, 3, 3), dtype=np.int8)
     labeled_array, num_features = label(r4, structure=struct2)
 
     #print(labeled_array)
     print(num_features)
 
+    return labeled_array, num_features
+
 
 def debug():
-    vol, metadata = readNifty('/home/willytell/Escritorio/LungCTDataBase/ioth/Nii_Vol/CTRoi_nii/LIDC-IDRI-0005_GT1_1.nii.gz')
+    vol, metadata = readNifty('/home/willytell/Escritorio/LungCTDataBase/ioth/Nii_Vol/CTRoi_nii/LIDC-IDRI-0016_GT1_4.nii.gz')
 
     sigma = 1  #[2, 2, 2]
     order= 0
@@ -96,7 +98,10 @@ def debug():
     truncate = 4.0
     output = np.float  # precision of the intermediate and final result
 
-    basicProcessing(vol, sigma, order, output, mode, truncate)
+    labeled, ncomponents = basicProcessing(vol, sigma, order, output, mode, truncate)
+
+    saveNifty(labeled, metadata, '/home/willytell/Escritorio/TEST-0016_GT1_4.nii.gz')
+
 
 if __name__ == '__main__':
     debug()
