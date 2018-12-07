@@ -4,8 +4,8 @@ import pydicom
 
 """ Basic functions to load a set of DCMs into a Numpy array and to get metadata stored in a DCM file.
 
-author: Guillermo Torres
-email:  gtorres@cvc.uab.es
+@author: Guillermo Torres
+@email:  gtorres@cvc.uab.es
 
 """
 

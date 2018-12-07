@@ -3,8 +3,8 @@ import numpy as np
 
 """ Basic functions to read from and save to an image file in Nifty format.
 
-author: Guillermo Torres
-email:  gtorres@cvc.uab.es
+@author: Guillermo Torres
+@email:  gtorres@cvc.uab.es
 """
 
 

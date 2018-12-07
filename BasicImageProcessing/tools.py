@@ -4,8 +4,8 @@ from scipy.ndimage.morphology import distance_transform_edt
 
 """ Useful functions for image processing.
 
-author: Guillermo Torres
-email:  gtorres@cvc.uab.es
+@author: Guillermo Torres
+@email:  gtorres@cvc.uab.es
 
 """
 
@@ -27,8 +27,6 @@ def distanceMap3D (volume):
     """
     # return the distance map for n-Dimensions
     return distance_transform_edt(np.logical_not(volume))
-
-
 
 def debug():
 
