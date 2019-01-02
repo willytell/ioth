@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 def getImageFilename(mask_filename):
     # For a given mask filename:  LIDC-IDRI-0001_GT1_1_Mask.nii.gz
-    # this function obtaing the corresponding image filename: LIDC-IDRI-0001_GT1_1.nii.gz
+    # this function obtain the corresponding image filename: LIDC-IDRI-0001_GT1_1.nii.gz
     name_splitted = mask_filename.split('.')[0].split('_')
     image_filename = name_splitted[0] + '_' + name_splitted[1] + '_' + name_splitted[2] + '.nii.gz'
     return image_filename
