@@ -35,7 +35,7 @@ def saveXLSX(filename, df):
         raise Exception("There is already a file named {}. Remove it!!!!".format(filename))
 
 
-def getFeatures (image_filename, mask_filename, imageITK, maskITK, paramPath):
+def getFeatures(image_filename, mask_filename, imageITK, maskITK, paramPath):
     # extract features using pyradiomic
 
     extractor = featureextractor.RadiomicsFeaturesExtractor(paramPath)
@@ -48,7 +48,7 @@ def getFeatures (image_filename, mask_filename, imageITK, maskITK, paramPath):
         # print(featureVector[featureName])
         if ('firstorder' in featureName) or ('glszm' in featureName) or \
                 ('glcm' in featureName) or ('glrlm' in featureName) or \
-                ('gldm' in featureName):
+                ('gldm' in featureName) or ('shape' in featureName):
             new_row.update({featureName: featureVector[featureName]})
 
     lst = sorted(new_row.items())  # Ordering the new_row dictionary
@@ -67,8 +67,11 @@ print("Begining ...")
 
 # Configuration files
 paramPath = os.path.join('config', 'Params.yaml')
-src_image_path = '/home/willytell/Escritorio/LungCTDataBase/lc3d/Nii_Vol/CTRoi_nii'
-src_mask_path = '/home/willytell/Escritorio/LungCTDataBase/lc3d/Nii_Vol/CTRoimask_nii'
+database_path = '/home/willytell/Escritorio/GuilleSession/Databases/LIDC-IDRI_Diagnosis'
+
+
+src_image_path = os.path.join(database_path, 'CTRoi_nii')
+src_mask_path = os.path.join(database_path, 'CTRoimask_nii')
 mask_pattern = '*.nii.gz'
 
 # list of mask filenames
@@ -89,7 +92,12 @@ for i in range(len(src_mask_list)):
 
 
 df = pd.DataFrame.from_dict(mydict)
+
 print("Writing to .xlsx file.")
 saveXLSX('features', df)
+
+
+
+
 
 print("Finished.")
