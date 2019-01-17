@@ -126,7 +126,8 @@ X_test_samples_array = X_test_samples.values
 y_test_samples_array = y_test_samples.values
 
 
-model = svm.SVC(gamma='auto')
+#model = svm.SVC(gamma='auto')
+model = svm.SVC(kernel='rbf', C=10, probability=True, class_weight='balanced', verbose=True, max_iter=-1)
 model.fit(X_training_samples_array, y_training_samples_array)
 
 # Remember: 1 is positive that is malignant, in other case it is negative (benigne)
